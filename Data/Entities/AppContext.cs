@@ -11,6 +11,7 @@ namespace Personal_Blogging_Platform.Data.Entities
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<OTP> OTPs { get; set; }
 
     }
 }

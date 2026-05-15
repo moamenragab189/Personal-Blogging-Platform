@@ -14,6 +14,6 @@ namespace Personal_Blogging_Platform.Data.Entities
         public bool IsEmailVerified { get; set; }= false;
         public List<Post> Posts { get; set; }= new List<Post>();
         public List<Comment> Comments { get; set; }= new List<Comment>();
-
+        public List<OTP> OTPs { get; set; }= new List<OTP>();
     }
 }
