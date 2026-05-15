@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Personal_Blogging_Platform.Data.Entities;
+
 namespace Personal_Blogging_Platform
 {
     public class Program
@@ -13,6 +16,8 @@ namespace Personal_Blogging_Platform
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
