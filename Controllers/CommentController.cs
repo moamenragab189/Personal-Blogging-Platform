@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Personal_Blogging_Platform.Data.DTOs.Comment;
 using Personal_Blogging_Platform.Service;
 using System.Security.Claims;
@@ -10,6 +11,7 @@ namespace Personal_Blogging_Platform.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [EnableRateLimiting("GeneralPolicy")]
     public class CommentController : ControllerBase
     {
         private readonly CommentService _commentService;

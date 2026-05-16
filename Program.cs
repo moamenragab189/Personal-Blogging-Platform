@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -8,6 +9,7 @@ using Personal_Blogging_Platform.Data.Repositories;
 using Personal_Blogging_Platform.Service;
 using Serilog;
 using System.Text;
+using System.Threading.RateLimiting;
 
 namespace Personal_Blogging_Platform
 {
@@ -86,10 +88,32 @@ namespace Personal_Blogging_Platform
         retainedFileCountLimit: 7)             
     .CreateLogger();
             builder.Host.UseSerilog();
+            builder.Services.AddRateLimiter(options =>
+            {
+               
+                options.AddFixedWindowLimiter("AuthPolicy", opt =>
+                {
+                    opt.PermitLimit = 5;           
+                    opt.Window = TimeSpan.FromMinutes(1);  
+                    opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                    opt.QueueLimit = 0;            
+                });
 
+                
+                options.AddFixedWindowLimiter("GeneralPolicy", opt =>
+                {
+                    opt.PermitLimit = 100;         
+                    opt.Window = TimeSpan.FromMinutes(1);  
+                    opt.QueueLimit = 0;
+                });
+
+                
+                options.RejectionStatusCode = 429;  
+            });
             var app = builder.Build();
             app.UseExceptionHandler("/error");
-            // Configure the HTTP request pipeline.
+            
+            app.UseRateLimiter();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

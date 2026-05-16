@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Personal_Blogging_Platform.Data.DTOs;
 using Personal_Blogging_Platform.Data.DTOs.auth;
 using Personal_Blogging_Platform.Data.Entities;
@@ -9,6 +10,7 @@ namespace Personal_Blogging_Platform.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("AuthPolicy")]
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
