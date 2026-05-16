@@ -2,6 +2,7 @@
 using Personal_Blogging_Platform.Data.DTOs.Post;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Data.Repositories;
+using Personal_Blogging_Platform.Exceptions;
 
 namespace Personal_Blogging_Platform.Service
 {
@@ -31,21 +32,31 @@ namespace Personal_Blogging_Platform.Service
         internal async Task UpdatePost(int id, PostDto postDto, int userId)
         {
             var post = await _repo.GetPostByIdAsync(id);
-            if (post == null || post.AuthorId != userId)
+            if (post == null )
             {
-                throw new Exception("Post not found or you do not have permission to update this post.");
+                throw new NotFoundException("Post not found.");
+            }
+            if (post.AuthorId != userId)
+            {
+                throw new UnauthorizedException("You do not have permission to update this post.");
             }
             _mapper.Map(postDto, post);
+
             post.UpdatedAt = DateTime.UtcNow;
+
             await _repo.UpdatePostAsync(post);
         }
 
         internal async Task DeletePost(int id, int userId)
         {
             var post = await _repo.GetPostByIdAsync(id);
-            if (post == null || post.AuthorId != userId)
+            if (post == null)
             {
-                throw new Exception("Post not found or you do not have permission to delete this post.");
+                throw new NotFoundException("Post not found.");
+            }
+            if (post.AuthorId != userId)
+            {
+                throw new UnauthorizedException("You do not have permission to delete this post.");
             }
             await _repo.DeletePostAsync(post);
 

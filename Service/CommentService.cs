@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Hosting;
 using Personal_Blogging_Platform.Data.DTOs.Comment;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Data.Repositories;
+using Personal_Blogging_Platform.Exceptions;
 
 namespace Personal_Blogging_Platform.Service
 {
@@ -22,7 +24,7 @@ namespace Personal_Blogging_Platform.Service
             var post = await _postRepo.GetPostByIdAsync(commentDto.PostId);
             if (post == null)
             {
-                throw new Exception("Post not found");
+                throw new NotFoundException("Post not found");
             }
          comment.AuthorId = userId;
          await _CommentRepo.AddComment(comment);   
@@ -31,9 +33,13 @@ namespace Personal_Blogging_Platform.Service
         internal async Task DeleteComment(int id, int userId)
         {
             var comment = await _CommentRepo.GetCommentByIdAsync(id);
-            if (comment == null || comment.AuthorId != userId)
+            if (comment == null)
             {
-                throw new Exception("Comment not found or you do not have permission to delete this comment.");
+                throw new NotFoundException("Comment not found.");
+            }
+            if (comment.AuthorId != userId)
+            {
+                throw new UnauthorizedException("You do not have permission to delete this comment.");
             }
             await _CommentRepo.DeleteComment(comment);
 
@@ -42,9 +48,9 @@ namespace Personal_Blogging_Platform.Service
         internal async Task<List<CommentDto>> GetCommentsByPostId(int postId)
         {
             var comments = await _CommentRepo.GetCommentsByPostIdAsync(postId);
-            if (comments == null)
+            if (comments == null || comments.Count == 0)
             {
-                throw new Exception("No comments found for this post.");
+                throw new NotFoundException("No comments found for this post.");
             }
             return _mapper.Map<List<CommentDto>>(comments);
         }

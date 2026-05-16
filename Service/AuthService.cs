@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Personal_Blogging_Platform.Data.DTOs;
 using Personal_Blogging_Platform.Data.DTOs.auth;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Data.Repositories;
-using Talkable.Data.DTOs.Personal_Blogging_Platform.Data.DTOs;
-using static System.Net.WebRequestMethods;
+using Personal_Blogging_Platform.Exceptions;
+
 
 namespace Personal_Blogging_Platform.Service
 {
@@ -26,12 +26,11 @@ namespace Personal_Blogging_Platform.Service
 
         internal async Task Regester(UserDto userDto)
         {
-            try 
-            {
+            
                 var existingUser = await _repo.GetUserByEmailAsync(userDto.Email);
                 if (existingUser != null)
                 {
-                    throw new Exception("User with this email already exists.");
+                    throw new BadRequestException("User with this email already exists.");
                 }
                 var user = _mapper.Map<User>(userDto);
                 user.HashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
@@ -45,11 +44,7 @@ namespace Personal_Blogging_Platform.Service
                 };
                 await _repo.SaveOTP(userOTP);
                 await _emailService.SendEmailAsync(user.Email, "OTP Email Verification", otp);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred during registration: " + ex.Message);
-            }
+           
         }
 
         internal async Task VerifyEmail(VerifyEmailDto verifyEmail)
@@ -57,12 +52,12 @@ namespace Personal_Blogging_Platform.Service
             var existingUser = await _repo.GetUserByEmailAsync(verifyEmail.Email);
             if (existingUser == null)
             {
-                throw new Exception("User with this email does not exist.");
+                throw new BadRequestException("User with this email does not exist.");
             }
             bool checkOtp = await _repo.GetOTPAsync(existingUser.Id, verifyEmail.Otp);
             if (!checkOtp)
             {
-                throw new Exception("Invalid OTP.");
+                throw new BadRequestException("Invalid OTP.");
             }
             existingUser.IsEmailVerified = true;
             await _repo.UpdateUserAsync(existingUser);
@@ -72,30 +67,25 @@ namespace Personal_Blogging_Platform.Service
         }
         internal async Task<string> Login(LoginDto loginDto)
         {
-            try
-            {
+            
                 var existingUser = await _repo.GetUserByEmailAsync(loginDto.Email);
                 if (existingUser == null)
                 {
-                    throw new Exception("User with this email does not exist.");
+                    throw new NotFoundException("User with this email does not exist.");
                 }
                 bool CheckPassword = BCrypt.Net.BCrypt.Verify(loginDto.Password, existingUser.HashedPassword);
                 if (!CheckPassword)
                 {
-                    throw new Exception("Invalid password.");
+                    throw new BadRequestException("Invalid password.");
                 }
                 if (!existingUser.IsEmailVerified)
                 {
-                    throw new Exception("Email is not verified.");
+                    throw new UnauthorizedException("Email is not verified.");
                 }
                 var claims = _jwtService.AddUserClaims(existingUser.Id, existingUser.Name);
                 return _jwtService.CreateToken(claims);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred during login: " + ex.Message);
-
-            }
+         
+            
 
         }
     }

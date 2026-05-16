@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Talkable.Data.DTOs
-{
+
+
     namespace Personal_Blogging_Platform.Data.DTOs
     {
         public class VerifyEmailDto
@@ -14,4 +14,4 @@ namespace Talkable.Data.DTOs
             public string Otp { get; set; }
         }
     }
-}
+
