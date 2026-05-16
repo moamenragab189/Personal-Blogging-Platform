@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Personal_Blogging_Platform.Data.DTOs;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Service;
+using Talkable.Data.DTOs.Personal_Blogging_Platform.Data.DTOs;
 
 namespace Personal_Blogging_Platform.Controllers
 {
@@ -25,6 +26,16 @@ namespace Personal_Blogging_Platform.Controllers
             await _authService.Regester(userDto);
             return Created();
         }
-        
+        [HttpPatch("verify-email")]
+        public IActionResult VerifyEmail(VerifyEmailDto verifyEmail)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _authService.VerifyEmail(verifyEmail);
+            return Ok();
+        }
+
     }
 }
