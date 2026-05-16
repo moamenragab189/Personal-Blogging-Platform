@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Data.Repositories;
 using Personal_Blogging_Platform.Service;
+using Serilog;
 using System.Text;
 
 namespace Personal_Blogging_Platform
@@ -50,7 +51,7 @@ namespace Personal_Blogging_Platform
                 });
             builder.Services.AddSwaggerGen(options =>
             {
-               
+
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -76,6 +77,16 @@ namespace Personal_Blogging_Platform
         }
     });
             });
+
+            Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()                         
+    .WriteTo.File("logs/log-.txt",             
+        rollingInterval: RollingInterval.Day,   
+        retainedFileCountLimit: 7)             
+    .CreateLogger();
+            builder.Host.UseSerilog();
+
             var app = builder.Build();
             app.UseExceptionHandler("/error");
             // Configure the HTTP request pipeline.
