@@ -25,6 +25,8 @@ namespace Personal_Blogging_Platform
             builder.Services.AddScoped<PostService>();
             builder.Services.AddScoped<PostRepository>();
             builder.Services.AddScoped<AuthRepository>();
+            builder.Services.AddScoped<CommentService>();
+            builder.Services.AddScoped<CommentRepository>();
             builder.Services.AddScoped<EMailService>();
             builder.Services.AddScoped<JwtService>();
             builder.Services.AddAutoMapper(typeof(Program));
