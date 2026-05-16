@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
-using Personal_Blogging_Platform.Data.DTOs;
+using Personal_Blogging_Platform.Data.DTOs.auth;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Data.Repositories;
 using Talkable.Data.DTOs.Personal_Blogging_Platform.Data.DTOs;

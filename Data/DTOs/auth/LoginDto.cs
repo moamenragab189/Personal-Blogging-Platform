@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Personal_Blogging_Platform.Data.DTOs
+namespace Personal_Blogging_Platform.Data.DTOs.auth
 {
     public class LoginDto
     {

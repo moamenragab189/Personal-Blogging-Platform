@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Personal_Blogging_Platform.Data.DTOs;
+using Personal_Blogging_Platform.Data.DTOs.auth;
 using Personal_Blogging_Platform.Data.Entities;
 
 namespace Personal_Blogging_Platform.Data.Mapping
@@ -12,8 +12,6 @@ namespace Personal_Blogging_Platform.Data.Mapping
                 dest => dest.HashedPassword,
                 opt => opt.Ignore()).ReverseMap();
                 
-            
-          
         }
     }
 }

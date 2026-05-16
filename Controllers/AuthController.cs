@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Personal_Blogging_Platform.Data.DTOs;
+using Personal_Blogging_Platform.Data.DTOs.auth;
 using Personal_Blogging_Platform.Data.Entities;
 using Personal_Blogging_Platform.Service;
 using Talkable.Data.DTOs.Personal_Blogging_Platform.Data.DTOs;
