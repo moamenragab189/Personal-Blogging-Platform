@@ -34,12 +34,31 @@ namespace Personal_Blogging_Platform.Controllers
         [HttpGet]
         public async Task<IActionResult> Post()
         {
-         var posts=  await _postService.GetPosts();
+            var posts = await _postService.GetPosts();
             if (posts == null || posts.Count == 0)
             {
                 return NotFound();
             }
             return Ok(posts);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePost(int id, PostDto postDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            await _postService.UpdatePost(id, postDto, userId);
+            return NoContent();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            await _postService.DeletePost(id, userId);
+            return NoContent();
+
         }
     }
 }

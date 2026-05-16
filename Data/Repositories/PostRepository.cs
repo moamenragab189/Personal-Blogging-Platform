@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Personal_Blogging_Platform.Data.Entities;
 
 namespace Personal_Blogging_Platform.Data.Repositories
@@ -16,9 +17,25 @@ namespace Personal_Blogging_Platform.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        internal async Task<Post?> GetPostByIdAsync(int id)
+        {
+            return await _context.Posts.FindAsync(id);
+        }
+
         internal async Task<List<Post>> GetPostsAsync()
         {
                 return await _context.Posts.ToListAsync();
+        }
+
+        internal async Task UpdatePostAsync(Post post)
+        {
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+        }
+        internal async Task DeletePostAsync(Post post)
+        {
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
         }
     }
 }

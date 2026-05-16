@@ -27,5 +27,28 @@ namespace Personal_Blogging_Platform.Service
            
             return _mapper.Map<List<PostDto>>(posts);
         }
+
+        internal async Task UpdatePost(int id, PostDto postDto, int userId)
+        {
+            var post = await _repo.GetPostByIdAsync(id);
+            if (post == null || post.AuthorId != userId)
+            {
+                throw new Exception("Post not found or you do not have permission to update this post.");
+            }
+            _mapper.Map(postDto, post);
+            post.UpdatedAt = DateTime.UtcNow;
+            await _repo.UpdatePostAsync(post);
+        }
+
+        internal async Task DeletePost(int id, int userId)
+        {
+            var post = await _repo.GetPostByIdAsync(id);
+            if (post == null || post.AuthorId != userId)
+            {
+                throw new Exception("Post not found or you do not have permission to delete this post.");
+            }
+            await _repo.DeletePostAsync(post);
+
+        }
     }
 }
