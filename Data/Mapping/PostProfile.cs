@@ -8,8 +8,8 @@ namespace Personal_Blogging_Platform.Data.Mapping
     {
         public PostProfile()
         {
-            CreateMap<PostDto, Post>()
-                .ReverseMap();
+            CreateMap<PostRequestDto, Post>();
+            CreateMap<Post, PostResponseDto>();
         }
     }
 }

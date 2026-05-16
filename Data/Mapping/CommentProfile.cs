@@ -8,7 +8,8 @@ namespace Personal_Blogging_Platform.Data.Mapping
     {
         public CommentProfile()
         {
-            CreateMap<CommentDto, Comment>().ReverseMap();
+            CreateMap<CommentRequestDto, Comment>();
+            CreateMap<Comment, CommentResponseDto>();
         }
     }
 }

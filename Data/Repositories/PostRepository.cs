@@ -24,7 +24,7 @@ namespace Personal_Blogging_Platform.Data.Repositories
 
         internal async Task<List<Post>> GetPostsAsync()
         {
-                return await _context.Posts.ToListAsync();
+                return await _context.Posts.Include(p => p.Comments).ToListAsync();
         }
 
         internal async Task UpdatePostAsync(Post post)

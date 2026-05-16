@@ -2,7 +2,7 @@
 
 namespace Personal_Blogging_Platform.Data.DTOs.Comment
 {
-    public class CommentDto
+    public class CommentResponseDto
     {
         public int Id { get; set; }
 

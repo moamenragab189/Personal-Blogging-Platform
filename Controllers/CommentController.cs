@@ -20,13 +20,13 @@ namespace Personal_Blogging_Platform.Controllers
             _commentService = commentService;
         }
         [HttpPost]
-        public async Task<IActionResult> AddComment(CommentDto commentDto)
+        public async Task<IActionResult> AddComment(CommentRequestDto commentDto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             await _commentService.AddComment(commentDto, userId);
             return Created();
         }
-        [HttpGet("post/{postId}")]
+        [HttpGet("{postId}")]
         public async Task<IActionResult> GetCommentsByPostId(int postId)
         {
             var comments = await _commentService.GetCommentsByPostId(postId);

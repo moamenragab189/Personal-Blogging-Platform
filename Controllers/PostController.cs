@@ -21,7 +21,7 @@ namespace Personal_Blogging_Platform.Controllers
             _postService = postService;
         }
         [HttpPost]
-        public async Task<IActionResult> AddPost(PostDto postDto)
+        public async Task<IActionResult> AddPost(PostRequestDto postDto)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace Personal_Blogging_Platform.Controllers
             return Ok(posts);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePost(int id, PostDto postDto)
+        public async Task<IActionResult> UpdatePost(int id, PostRequestDto postDto)
         {
             if (!ModelState.IsValid)
             {

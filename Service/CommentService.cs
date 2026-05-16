@@ -20,7 +20,7 @@ namespace Personal_Blogging_Platform.Service
             _mapper = mapper;
             _logger = logger;
         }
-        internal async Task AddComment(CommentDto commentDto, int userId)
+        internal async Task AddComment(CommentRequestDto commentDto, int userId)
         {
             _logger.LogInformation("Adding comment for post {PostId} by user {UserId}", commentDto.PostId, userId);
 
@@ -52,7 +52,7 @@ namespace Personal_Blogging_Platform.Service
             _logger.LogInformation("Comment with ID {CommentId} deleted successfully by user ID {UserId}.", id, userId);
         }
 
-        internal async Task<List<CommentDto>> GetCommentsByPostId(int postId)
+        internal async Task<List<CommentResponseDto>> GetCommentsByPostId(int postId)
         {
             var comments = await _CommentRepo.GetCommentsByPostIdAsync(postId);
             if (comments == null || comments.Count == 0)
@@ -61,7 +61,7 @@ namespace Personal_Blogging_Platform.Service
                 throw new NotFoundException("No comments found for this post.");
             }
 
-            return _mapper.Map<List<CommentDto>>(comments);
+            return _mapper.Map<List<CommentResponseDto>>(comments);
         }
     }
 }

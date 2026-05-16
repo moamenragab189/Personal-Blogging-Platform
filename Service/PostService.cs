@@ -17,7 +17,7 @@ namespace Personal_Blogging_Platform.Service
             _mapper = mapper;
             _logger = logger;
         }
-        internal async Task AddPost(PostDto postDto, int userId)
+        internal async Task AddPost(PostRequestDto postDto, int userId)
         {
             var post = _mapper.Map<Post>(postDto);
             post.AuthorId = userId;
@@ -25,14 +25,14 @@ namespace Personal_Blogging_Platform.Service
             _logger.LogInformation("Post added successfully with by user ID: {UserId}",  userId);
         }
 
-        internal async Task<List<PostDto>> GetPosts()
+        internal async Task<List<PostResponseDto>> GetPosts()
         {
           var posts= await _repo.GetPostsAsync();
             _logger.LogInformation("Retrieved {Count} posts.", posts.Count);
-            return _mapper.Map<List<PostDto>>(posts);
+            return _mapper.Map<List<PostResponseDto>>(posts);
         }
 
-        internal async Task UpdatePost(int id, PostDto postDto, int userId)
+        internal async Task UpdatePost(int id, PostRequestDto postDto, int userId)
         {
             var post = await _repo.GetPostByIdAsync(id);
             if (post == null )
