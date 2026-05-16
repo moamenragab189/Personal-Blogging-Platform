@@ -110,9 +110,19 @@ namespace Personal_Blogging_Platform
                 
                 options.RejectionStatusCode = 429;  
             });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                    policy
+                        .SetIsOriginAllowed(_ => true)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                );
+            });
             var app = builder.Build();
             app.UseExceptionHandler("/error");
-            
+            app.UseCors("AllowAll");
             app.UseRateLimiter();
             if (app.Environment.IsDevelopment())
             {
