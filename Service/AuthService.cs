@@ -13,12 +13,16 @@ namespace Personal_Blogging_Platform.Service
         private readonly AuthRepository _repo;
         private readonly IMapper _mapper;
         private readonly EMailService _emailService;
-        public AuthService(AuthRepository repo, IMapper mapper, EMailService emailService)
+        private readonly JwtService _jwtService;
+        public AuthService(AuthRepository repo, IMapper mapper, EMailService emailService, JwtService jwtService)
         {
             _repo = repo;
             _mapper = mapper;
             _emailService = emailService;
+            _jwtService = jwtService;
+
         }
+
 
         internal async Task Regester(UserDto userDto)
         {
@@ -64,6 +68,34 @@ namespace Personal_Blogging_Platform.Service
             await _repo.UpdateUserAsync(existingUser);
             await _repo.DeleteOTPAsync(existingUser.Id, verifyEmail.Otp);
 
+
+        }
+        internal async Task<string> Login(LoginDto loginDto)
+        {
+            try
+            {
+                var existingUser = await _repo.GetUserByEmailAsync(loginDto.Email);
+                if (existingUser == null)
+                {
+                    throw new Exception("User with this email does not exist.");
+                }
+                bool CheckPassword = BCrypt.Net.BCrypt.Verify(loginDto.Password, existingUser.HashedPassword);
+                if (!CheckPassword)
+                {
+                    throw new Exception("Invalid password.");
+                }
+                if (!existingUser.IsEmailVerified)
+                {
+                    throw new Exception("Email is not verified.");
+                }
+                var claims = _jwtService.AddUserClaims(existingUser.Id, existingUser.Name);
+                return _jwtService.CreateToken(claims);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred during login: " + ex.Message);
+
+            }
 
         }
     }

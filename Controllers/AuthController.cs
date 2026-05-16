@@ -27,14 +27,24 @@ namespace Personal_Blogging_Platform.Controllers
             return Created();
         }
         [HttpPatch("verify-email")]
-        public IActionResult VerifyEmail(VerifyEmailDto verifyEmail)
+        public async Task<IActionResult> VerifyEmail(VerifyEmailDto verifyEmail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _authService.VerifyEmail(verifyEmail);
+            await _authService.VerifyEmail(verifyEmail);
             return Ok();
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var token = await _authService.Login(loginDto);
+            return Ok(new { AccessToken = token });
         }
 
     }

@@ -23,6 +23,7 @@ namespace Personal_Blogging_Platform
             builder.Services.AddScoped<PostRepository>();
             builder.Services.AddScoped<AuthRepository>();
             builder.Services.AddScoped<EMailService>();
+            builder.Services.AddScoped<JwtService>();
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
