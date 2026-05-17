@@ -43,7 +43,7 @@ namespace Personal_Blogging_Platform.Controllers
 
 
             return Problem(
-                   detail: "An unexpected error occurred."
+                   detail: exception?.Message
                    , statusCode: StatusCodes.Status500InternalServerError
                    );
         }
