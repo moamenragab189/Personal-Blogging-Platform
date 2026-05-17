@@ -124,11 +124,11 @@ namespace Personal_Blogging_Platform
             app.UseExceptionHandler("/error");
             app.UseCors("AllowAll");
             app.UseRateLimiter();
-            if (app.Environment.IsDevelopment())
-            {
+          
+            
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+          
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
