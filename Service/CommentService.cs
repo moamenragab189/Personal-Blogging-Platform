@@ -58,7 +58,6 @@ namespace Personal_Blogging_Platform.Service
             if (comments == null || comments.Count == 0)
             {
                     _logger.LogInformation("No comments found for post with ID {PostId}.", postId);
-                throw new NotFoundException("No comments found for this post.");
             }
 
             return _mapper.Map<List<CommentResponseDto>>(comments);

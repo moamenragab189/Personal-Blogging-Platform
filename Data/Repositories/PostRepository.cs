@@ -37,5 +37,17 @@ namespace Personal_Blogging_Platform.Data.Repositories
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
         }
+
+        internal async Task AddCategory(object category)
+        {
+                _context.Categories.Add((Category)category);
+                await _context.SaveChangesAsync();
+
+        }
+
+        internal async Task<List<Category>> GetCategoriesAsync()
+        {
+            return await _context.Categories.ToListAsync();
+        }
     }
 }

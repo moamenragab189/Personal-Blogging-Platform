@@ -37,10 +37,6 @@ namespace Personal_Blogging_Platform.Controllers
         public async Task<IActionResult> Post()
         {
             var posts = await _postService.GetPosts();
-            if (posts == null || posts.Count == 0)
-            {
-                return NotFound();
-            }
             return Ok(posts);
         }
         [HttpPut("{id}")]
