@@ -30,7 +30,7 @@ namespace Personal_Blogging_Platform
             builder.Services.AddScoped<AuthRepository>();
             builder.Services.AddScoped<CommentService>();
             builder.Services.AddScoped<CommentRepository>();
-            builder.Services.AddScoped<EMailService>();
+            builder.Services.AddScoped < EmailService > ();
             builder.Services.AddScoped<JwtService>();
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddDbContext<AppDbContext>(options =>

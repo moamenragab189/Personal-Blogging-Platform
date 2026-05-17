@@ -12,10 +12,10 @@ namespace Personal_Blogging_Platform.Service
     {
         private readonly AuthRepository _repo;
         private readonly IMapper _mapper;
-        private readonly EMailService _emailService;
+        private readonly EmailService _emailService;
         private readonly JwtService _jwtService;
         private readonly ILogger<AuthService> _logger;
-        public AuthService(AuthRepository repo, IMapper mapper, EMailService emailService, JwtService jwtService, ILogger<AuthService> logger)
+        public AuthService(AuthRepository repo, IMapper mapper, EmailService emailService, JwtService jwtService, ILogger<AuthService> logger)
         {
             _repo = repo;
             _mapper = mapper;
