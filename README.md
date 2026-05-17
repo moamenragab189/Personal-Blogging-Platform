@@ -33,6 +33,14 @@ A robust RESTful API for a Personal Blogging Platform built with .NET 8, Postgre
 - **AutoMapper**: Clean separation between Entities and DTOs.
 - **Swagger UI**: Fully documented and testable endpoints with JWT Bearer authorization support.
 
+## Live Demo
+
+The API is deployed and accessible at:
+
+- **Base URL:** `https://personal-blogging-platform-production.up.railway.app`
+- **Swagger UI:** `https://personal-blogging-platform-production.up.railway.app/swagger/index.html`
+
+> **Note:** The Swagger documentation is enabled for demonstration and testing purposes.
 ---
 ## API Endpoints
 
